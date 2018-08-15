@@ -1,10 +1,14 @@
-require 'oystercard'
+require '/Users/harryjames/Documents/MA/Projects/oystercard_challenge/lib/oystercard.rb'
 
 describe OysterCard do
   let(:mock_station) { double :station, station_id: :AB }
 
   it 'sets the maximum balance to 90' do
     expect { subject.top_up(100) }.to raise_error 'Balance can\'t be greater than £90.'
+  end
+
+  it 'initiates with an empty journey log' do
+    expect(subject.journey_history).to eq []
   end
 
   describe '#balance' do
@@ -69,12 +73,18 @@ describe OysterCard do
 
       it 'records the exit station id' do
         subject.touch_out(mock_station)
-        expect(subject.exit_station).to eq :AB
+        expect(subject.log.exit_station).to eq :AB
       end
 
       it 'sets the entry_station variable to nil on exit' do
         subject.touch_out(mock_station)
         expect(subject.entry_station).to be nil
+      end
+
+      it 'creates a hash of the journey information' do
+        subject.touch_in(mock_station)
+        subject.touch_out(mock_station)
+        expect(subject.journey_history).to eq [{in: :AB, out: :AB}]
       end
     end
   end
