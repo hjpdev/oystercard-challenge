@@ -1,29 +1,38 @@
+require '/Users/harryjames/Documents/MA/Projects/oystercard_challenge/lib/fare_mod.rb'
+
 class Journey
-  attr_reader :entry_station, :exit_station, :fare, :history
+  include FareMod
+
+  attr_reader :entry_station, :exit_station, :sz, :ez
 
   PENALTY_FARE = 10
+  MIN_FARE = 6
 
-  def initialize
-    @history = []
+  def fare
+    @fare = peak_price(format_zones)
   end
 
   def start(station)
     @entry_station = station.station_id
+    @sz = station.zone
   end
 
   def finish(station)
     @exit_station = station.station_id
-    journey_hash = { in: @entry_station }
-    journey_hash[:out] = @exit_station
-    @history << journey_hash
+    @ez = station.zone
   end
 
   def calculate_fare
-    return (@fare = PENALTY_FARE) if @entry_station == nil || @exit_station == nil
-    @fare = 1
+    @fare = peak_price(format_zones)
+  end
+
+  def format_zones
+    return '1' if @sz == 1 && @ez == 1
+    return '2-6' if @sz != 1 && @ez != 1
+#Needs sorting
   end
 
   def complete?
-    @exit_station ? true : false
+    !!@exit_station
   end
 end

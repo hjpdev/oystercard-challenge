@@ -1,14 +1,17 @@
 require '/Users/harryjames/Documents/MA/Projects/oystercard_challenge/lib/oystercard.rb'
+require 'date'
+
+date = Date.today.strftime('%F').split('-').reverse.join('-')
 
 describe OysterCard do
-  let(:mock_station) { double :station, station_id: :AB }
+  let(:mock_station) { double :station, station_id: :AB, zone: 1 }
 
-  it 'sets the maximum balance to 90' do
+  it "sets the maximum balance to #{OysterCard::MAX_BALANCE}" do
     expect { subject.top_up(100) }.to raise_error 'Balance can\'t be greater than £90.'
   end
 
   it 'initiates with an empty journey log' do
-    expect(subject.journey_history).to eq []
+    expect(subject.journey_log.journeys).to eq []
   end
 
   describe '#balance' do
@@ -27,7 +30,6 @@ describe OysterCard do
     end
 
     describe '#in_journey?' do
-      
       it 'returns true if an entry station is registered' do
         subject.touch_in(mock_station)
         expect(subject.in_journey?).to be true
@@ -53,7 +55,6 @@ describe OysterCard do
     end
   
     describe '#touch_in' do
-
       it 'registers the oystercard as in a journey after touch_in' do
         subject.touch_in(mock_station)
         expect(subject.in_journey?).to be true
@@ -61,30 +62,24 @@ describe OysterCard do
     end
 
     describe '#touch_out' do
-
       it 'checks if the oystercard is in a journey after touch_out' do
         subject.touch_out(mock_station)
         expect(subject.in_journey?).to be false
       end
 
       it 'deducts a fare from the card balance on touch out' do
-        expect { subject.touch_out(mock_station) }.to change { subject.balance }.by(-OysterCard::MINIMUM_FARE)
+        expect { subject.touch_out(mock_station) }.to change { subject.balance }.by(-Journey::MIN_FARE)
       end
 
       it 'records the exit station id' do
         subject.touch_out(mock_station)
-        expect(subject.log.exit_station).to eq :AB
-      end
-
-      it 'sets the entry_station variable to nil on exit' do
-        subject.touch_out(mock_station)
-        expect(subject.entry_station).to be nil
+        expect(subject.journey_log.out).to eq :AB
       end
 
       it 'creates a hash of the journey information' do
         subject.touch_in(mock_station)
         subject.touch_out(mock_station)
-        expect(subject.journey_history).to eq [{in: :AB, out: :AB}]
+        expect(subject.journey_log.journeys).to eq [{date: date, in: :AB, out: :AB}]
       end
     end
   end
