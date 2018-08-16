@@ -25,10 +25,3 @@ module FareMod
     FARES.keys
   end
 end
-
-# class NC
-#   include FareMod
-# end
-
-# nc = NC.new
-

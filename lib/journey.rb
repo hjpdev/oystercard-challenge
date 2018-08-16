@@ -34,4 +34,3 @@ class Journey
     !!@exit_station
   end
 end
-
