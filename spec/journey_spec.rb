@@ -9,50 +9,40 @@ describe Journey do
 
   describe '#start' do
     it 'should start a journey' do
-      subject.start(st1)
-      expect(subject.entry_station).to eq :AB
+      expect(subject.start(st1)).to eq 1
     end
   end
 
   describe '#finish' do
     it 'should finish a journey' do
       subject.start(st1)
-      subject.finish(st2)
-      expect(subject.exit_station).to eq :XY
+      expect(subject.finish(st2)).to eq 2
     end
   end
 
-  describe '#calculate_fare' do
+  describe '#fare' do
     it 'should calculate the correct fare, 1-3' do
       subject.start(st3)
       subject.finish(st1)
-      expect(subject.peak_price(subject.format_zones)).to eq 3.3
+      expect(subject.peak_price([st3.zone, st1.zone])).to eq 3.3
     end
 
     it 'should calculate the correct fare, 2-6' do
       subject.start(st2)
       subject.finish(st6)
-      expect(subject.peak_price(subject.format_zones)).to eq 2.8
+      expect(subject.peak_price([st2.zone, st6.zone])).to eq 2.8
     end
 
     it 'should calculate the correct fare, 1-6' do
       subject.start(st1)
       subject.finish(st6)
-      expect(subject.peak_price(subject.format_zones)).to eq 5.1
+      expect(subject.peak_price([st1.zone, st6.zone])).to eq 5.1
     end
 
     it 'charges a penalty fare if no exit station is given' do
       subject.start(st1)
-      subject.calculate_fare
+      subject.fare
       expect(subject.fare).to eq Journey::PENALTY_FARE
-    end
-  end
-
-  describe '#format_zones' do
-    it 'given two zone numbers, return the key required to get fare' do
-      subject.start(st1)
-      subject.finish(st6)
-      expect(subject.format_zones).to eq '1-6'
     end
   end
 

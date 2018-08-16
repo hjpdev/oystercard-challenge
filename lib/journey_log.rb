@@ -2,32 +2,36 @@ require 'date'
 require_relative 'journey'
 
 class JourneyLog
-  attr_reader :journey, :journeys, :in, :out
+  attr_reader :journey, :in, :out
 
   def initialize(journey_klass=Journey.new)
     @journey = journey_klass
-    @journeys = []
+    @log = []
   end
 
-  def start(station)
+  def log
+    @log.dup
+  end
+
+  def start_log(station)
     @in = station.station_id
+    @log << current_journey
     @journey.start(station)
   end
 
-  def finish(station)
+  def finish_log(station)
     @out = station.station_id
     @journey.finish(station)
-    @journey.calculate_fare
-    @journeys << current_journey.merge(fare: @journey.fare)
-  end
-
-  def current_journey
-    { date: date_format, in: @in, out: @out }
+    @log[-1] = current_journey unless log.empty?
   end
 
   private
 
-    def date_format
-      Date.today.strftime('%F').split('-').reverse.join('-')
-    end
+  def current_journey
+    { date: date_format, in: @in, out: @out, fare: @journey.fare}
+  end
+
+  def date_format
+    Date.today.strftime('%F').split('-').reverse.join('-')
+  end
 end

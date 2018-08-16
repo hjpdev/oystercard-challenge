@@ -7,13 +7,13 @@ class OysterCard
 
   attr_reader :balance, :journey_log
 
-  def initialize(journey_log_klass=JourneyLog)
-    @balance = 0
-    @journey_log = journey_log_klass.new
+  def initialize(balance=0, journey_log_klass=JourneyLog.new)
+    @balance = balance
+    @journey_log = journey_log_klass
   end
 
   def journey_history
-    @journey_log.journeys
+    @journey_log.log
   end
 
   def in_journey?
@@ -27,11 +27,11 @@ class OysterCard
 
   def touch_in(station=nil)
     raise 'Balance not high enough.' if @balance < Journey::MIN_FARE
-    @journey_log.start(station)
+    @journey_log.start_log(station)
   end
 
   def touch_out(station=nil)
-    @journey_log.finish(station)
+    @journey_log.finish_log(station)
     deduct(Journey::MIN_FARE)
   end
 
@@ -41,3 +41,4 @@ private
     @balance -= amount
   end
 end
+

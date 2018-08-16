@@ -5,23 +5,18 @@ module FareMod
           "1-5"=>[4.7, 3.1], "1-6"=>[5.1, 3.1],
           "2-6"=>[2.8, 1.5]}
 
-  def peak_price(zones)
-    fares.select { |k, v| k == zones }.values.flatten.first
+  def peak_price(array)
+    FARES[zones_to_key(array)][0]
   end
 
-  def fares
-    FARES
+  def off_peak_price(array)
+    FARES[zones_to_key(array)][1]
   end
 
-  def off_peak_price(zones)
-    fares.select { |k, v| k == zones }.values.flatten.last
-  end
-
-  def index_of(string)
-    index = FARES.keys.index(string)
-  end
-
-  def keys
-    FARES.keys
+  private
+  def zones_to_key(array)
+    return "2-6" if array[0] != 1 && array[1] != 1
+    return "1" if array[0] == 1 && array[1] == 1
+    FARES.keys[(array.max)-1]
   end
 end

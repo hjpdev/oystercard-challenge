@@ -11,12 +11,17 @@ describe OysterCard do
   end
 
   it 'initiates with an empty journey log' do
-    expect(subject.journey_log.journeys).to eq []
+    expect(subject.journey_log.log.empty?).to be true
   end
 
   describe '#balance' do
-    it 'has a starting balance of 0' do
+    it 'has a starting balance of 0 by default' do
       expect(subject.balance).to eq 0
+    end
+
+    it 'can be initiated with credit' do
+      oc = OysterCard.new(27)
+      expect(oc.balance).to eq 27
     end
 
     it 'does not let you travel with a balance below the minimum fare' do
@@ -79,7 +84,7 @@ describe OysterCard do
       it 'creates a hash of the journey information' do
         subject.touch_in(mock_station)
         subject.touch_out(mock_station)
-        expect(subject.journey_log.journeys).to eq [{date: date, fare: 2.4, in: :AB, out: :AB}]
+        expect(subject.journey_log.log).to eq [{date: date, fare: 2.4, in: :AB, out: :AB}]
       end
     end
   end
