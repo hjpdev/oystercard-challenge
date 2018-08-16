@@ -16,7 +16,9 @@ class JourneyLog
 
   def finish(station)
     @out = station.station_id
-    @journeys << current_journey.merge(balance: @journey.fare)
+    @journey.finish(station)
+    @journey.calculate_fare
+    @journeys << current_journey.merge(fare: @journey.fare)
   end
 
   def current_journey

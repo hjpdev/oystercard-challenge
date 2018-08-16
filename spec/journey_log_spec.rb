@@ -21,7 +21,7 @@ describe JourneyLog do
     it 'holds a list of previous journeys' do
       subject.start(mock_station1)
       subject.finish(mock_station2)
-      expect(subject.journeys).to eq [{ date: date, in: :AA, out: :BB }]
+      expect(subject.journeys).to eq [{ date: date, fare: 2.9, in: :AA, out: :BB }]
     end
   end
 end

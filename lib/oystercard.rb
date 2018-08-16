@@ -41,20 +41,3 @@ private
     @balance -= amount
   end
 end
-
-oc = OysterCard.new
-s1 = Station.new(:XX, 1)
-s2 = Station.new(:YY, 6)
-s3 = Station.new(:AA, 2)
-
-oc.top_up(20)
-oc.touch_in(s1)
-oc.touch_out(s2)
-
-p oc.journey_log.journey.calculate_fare
-
-oc.touch_in(s1)
-oc.touch_out(s2)
-
-p oc.journey_log.journey.calculate_fare
-p oc.journey_log.journeys

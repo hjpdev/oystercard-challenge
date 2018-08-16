@@ -79,7 +79,7 @@ describe OysterCard do
       it 'creates a hash of the journey information' do
         subject.touch_in(mock_station)
         subject.touch_out(mock_station)
-        expect(subject.journey_log.journeys).to eq [{date: date, in: :AB, out: :AB}]
+        expect(subject.journey_log.journeys).to eq [{date: date, fare: 2.4, in: :AB, out: :AB}]
       end
     end
   end
