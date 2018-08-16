@@ -12,14 +12,6 @@ class OysterCard
     @journey_log = journey_log_klass
   end
 
-  def journey_history
-    @journey_log.log
-  end
-
-  def in_journey?
-    !!@journey_log.in
-  end
-
   def top_up(amount)
     raise "Balance can't be greater than £#{MAX_BALANCE}." if (@balance + amount) > MAX_BALANCE
     @balance += amount
@@ -36,9 +28,7 @@ class OysterCard
   end
 
 private
-
   def deduct(amount)
     @balance -= amount
   end
 end
-

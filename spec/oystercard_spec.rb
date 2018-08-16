@@ -34,17 +34,6 @@ describe OysterCard do
       subject.top_up(10)
     end
 
-    describe '#in_journey?' do
-      it 'returns true if an entry station is registered' do
-        subject.touch_in(mock_station)
-        expect(subject.in_journey?).to be true
-      end
-
-      it 'returns false if an entry station is not registered' do
-        expect(subject.in_journey?).to be false
-      end
-    end
-
     describe '#top_up do' do
       it 'tops up by given amount' do
         subject.top_up(10)
@@ -58,20 +47,8 @@ describe OysterCard do
         expect(subject.balance).to eq 7
       end
     end
-  
-    describe '#touch_in' do
-      it 'registers the oystercard as in a journey after touch_in' do
-        subject.touch_in(mock_station)
-        expect(subject.in_journey?).to be true
-      end
-    end
 
     describe '#touch_out' do
-      it 'checks if the oystercard is in a journey after touch_out' do
-        subject.touch_out(mock_station)
-        expect(subject.in_journey?).to be false
-      end
-
       it 'deducts a fare from the card balance on touch out' do
         expect { subject.touch_out(mock_station) }.to change { subject.balance }.by(-Journey::MIN_FARE)
       end
@@ -80,11 +57,12 @@ describe OysterCard do
         subject.touch_out(mock_station)
         expect(subject.journey_log.out).to eq :AB
       end
-
-      it 'creates a hash of the journey information' do
-        subject.touch_in(mock_station)
-        subject.touch_out(mock_station)
-        expect(subject.journey_log.log).to eq [{date: date, fare: 2.4, in: :AB, out: :AB}]
+    end
+   
+    describe '#touch_in' do
+      it 'raises error if balance os too low to travel' do
+        oc = OysterCard.new
+        expect{ oc.touch_in(mock_station) }.to raise_error('Balance not high enough.')
       end
     end
   end

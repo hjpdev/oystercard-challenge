@@ -23,13 +23,13 @@ describe JourneyLog do
       subject.finish_log(mock_station2)
       subject.start_log(mock_station2)
       subject.finish_log(mock_station1)
-      expect(subject.log).to eq [{ date: date, fare: 2.9, in: :AA, out: :BB },
-                                 { date: date, fare: 2.9, in: :BB, out: :AA }]
+      expect(subject.log.empty?).to be false 
     end
 
     describe '#start_log' do
-      it 'tells the journey to start ∴ returns zone number' do
-        expect(subject.start_log(mock_station2)).to eq 2
+      it 'tells the journey to start & adds incomplete info to log' do
+        subject.start_log(mock_station2)
+        expect(subject.log.empty?).to be false
       end
 
       it 'sets @in to the station_id' do
@@ -50,8 +50,7 @@ describe JourneyLog do
         subject.finish_log(mock_station2)
         subject.start_log(mock_station2)
         subject.finish_log(mock_station1)
-        expect(subject.log).to eq [{ date: date, fare: 2.9, in: :AA, out: :BB },
-                                   { date: date, fare: 2.9, in: :BB, out: :AA }]
+        expect(subject.log.empty?).to be false
       end
     end
   end

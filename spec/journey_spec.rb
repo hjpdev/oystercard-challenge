@@ -45,11 +45,4 @@ describe Journey do
       expect(subject.fare).to eq Journey::PENALTY_FARE
     end
   end
-
-  describe '#complete?' do
-    it 'should show whether or not the journey is complete' do
-      subject.start(st1)
-      expect(subject.complete?).to be false
-    end
-  end
 end
