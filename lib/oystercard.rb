@@ -32,13 +32,3 @@ private
     @balance -= amount
   end
 end
-
-oc = OysterCard.new(50)
-st1 = Station.new(:XX, 'x', rand(1..6))
-st2 = Station.new(:YY, 'y', rand(1..6))
-
-oc.touch_in(st1)
-oc.touch_out(st2)
-
-p oc.journey_log.log
-
