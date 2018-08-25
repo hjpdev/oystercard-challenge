@@ -6,7 +6,6 @@ def date
 end
 
 describe JourneyLog do
-  let(:mock_info) { double :journey, { in: :XX, out: :YY } }
   let(:mock_station1) { double :station, station_id: :AA, zone: 1 }
   let(:mock_station2) { double :station, station_id: :BB, zone: 2 }
 

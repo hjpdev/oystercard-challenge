@@ -43,8 +43,7 @@ describe OysterCard do
   
     describe '#deduct' do
       it 'reduces the balance by a specified amount' do
-        subject.send(:deduct, 3)
-        expect(subject.balance).to eq 7
+        expect{subject.send(:deduct, 3)}.to change{subject.balance}.by (-3)
       end
     end
 
