@@ -3,7 +3,7 @@ Oyster Card
 Early project done in week 2 of Maker's Academy to practice building applications with objects. Aims to emulate TfL's Oyster Card system.
 
 
-##System Features
+## System Features
 ------
 - Money can be stored on cards
 - Money can be added to cards
@@ -18,7 +18,7 @@ Early project done in week 2 of Maker's Academy to practice building application
 - Penalty charges are deducted if user fails to to touch out
 - Correct fair calculated and deducted for journey when user touches out
 
-##User Stories
+## User Stories
 ------
 ```
 In order to use public transport
